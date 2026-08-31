@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #f5f5f1;
+  --color-surface: #ebebe4;
+  --color-surface-alt: #e1e2d8;
+  --color-ink: #16171a;
+  --color-ink-soft: #5c6066;
+  --color-line: #d6d7cb;
+  --color-onyx: #16171a;
+
+  --color-volt: #d7ff3d;
+  --color-volt-dark: #aecf1f;
+  --color-volt-ink: #1c2200;
+
+  --color-danger: #e8402c;
+  --color-success: #1fa363;
+
+  --font-sans: "Inter", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(16, 17, 20, 0.07), 0 1px 1px rgba(16, 17, 20, 0.05);
+  --shadow-float: 0 12px 32px rgba(16, 17, 20, 0.2);
+}
+
+:root[data-theme="dark"] {
+  --color-canvas: #0c0d0f;
+  --color-surface: #17181b;
+  --color-surface-alt: #202226;
+  --color-ink: #f1f2ec;
+  --color-ink-soft: #9a9da3;
+  --color-line: #2b2d31;
+
+  --color-volt: #d7ff3d;
+  --color-volt-dark: #c2eb2a;
+  --color-volt-ink: #14170a;
+
+  --color-danger: #ff6b5e;
+  --color-success: #3ddc84;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes pulse-mic {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(215, 255, 61, 0.55); }
+  50% { box-shadow: 0 0 0 18px rgba(215, 255, 61, 0); }
+}
+
+.animate-pulse-mic {
+  animation: pulse-mic 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Transicao de tema: revelacao circular a partir do botao clicado (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+@supports (view-transition-name: root) {
+  ::view-transition-new(root) {
+    animation: revelar-tema 0.65s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
+@keyframes revelar-tema {
+  from {
+    clip-path: circle(0% at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+}
